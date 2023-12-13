@@ -23,7 +23,6 @@ public class UnitOfWork : IDisposable
             {
                 _accountRepository = new AccountRepository(_context);
             }
-
             return _accountRepository;
         }
     }

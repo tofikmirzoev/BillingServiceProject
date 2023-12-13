@@ -1,13 +1,15 @@
 using BillingAPI.Models;
+using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;
 
 namespace BillingAPI.Services;
 
 public class TransactionService : ITransactionService
 {
-    public TransactionService()
+    private UnitOfWork _unitOfWork { get; }
+    public TransactionService(UnitOfWork unitOfWork)
     {
-        
+        _unitOfWork = unitOfWork;
     }
     public List<Transactions> GetTransactions(string accountId)
     {
@@ -21,7 +23,7 @@ public class TransactionService : ITransactionService
 
     public bool AccountExists(string accountId)
     {
-        throw new NotImplementedException();
+        return _unitOfWork.account.AccountExists(accountId);
     }
 
     public bool DoPurchase(string fromAccount, string toAccount, double amountToBeTransferred, string purchaseType)
