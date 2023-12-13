@@ -8,5 +8,12 @@
       <jdbc-url>Server=localhost\MSSQLSERVER,1433;Database=billingdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="billingdb@TMIRZAYEV-HP" uuid="3c42ee59-edbe-4670-8e92-d89df71aa587">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=TMIRZAYEV-HP\SQLEXPRESS;Database=billingdb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
