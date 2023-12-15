@@ -15,7 +15,7 @@ public class UnitOfWork : IDisposable
     private ICustomerRepository _customerRepository;
     private ITransactionRepository _transactionRepository;
 
-    public IAccountRepository account
+    public IAccountRepository Account
     {
         get
         {
@@ -24,6 +24,28 @@ public class UnitOfWork : IDisposable
                 _accountRepository = new AccountRepository(_context);
             }
             return _accountRepository;
+        }
+    }
+    public ICustomerRepository Customer
+    {
+        get
+        {
+            if (_customerRepository == null)
+            {
+                _customerRepository = new CustomerRepository(_context);
+            }
+            return _customerRepository;
+        }
+    }
+    public ITransactionRepository Tranasctions
+    {
+        get
+        {
+            if (_transactionRepository == null)
+            {
+                _transactionRepository = new TransactionRepository(_context);
+            }
+            return _transactionRepository;
         }
     }
     public virtual void Dispose(bool disposing)

@@ -1,6 +1,7 @@
 using AutoMapper;
 using BillingAPI.BillingMessages;
 using BillingAPI.Interfaces;
+using BillingAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAPI.Controllers;
@@ -11,11 +12,13 @@ public class TransactionController : Controller
 {
     private readonly ITransactionRepository _transactionRepository;
     private readonly IMapper _mapper;
+    private readonly TransactionService _transactionService;
 
-    public TransactionController(ITransactionRepository transactionRepository, IMapper mapper)
+    public TransactionController(ITransactionRepository transactionRepository, IMapper mapper, TransactionService transactionService)
     {
         _transactionRepository = transactionRepository;
         _mapper = mapper;
+        _transactionService = transactionService;
     }
     
     [HttpPost("DoPurchase")]
@@ -27,53 +30,39 @@ public class TransactionController : Controller
         if (request == null)
             return BadRequest(ModelState);
         
-        if (!_transactionRepository.AccountExists(request.fromAccount))
-        {
-            ModelState.AddModelError("","There is no such Account");
-            return StatusCode(204, ModelState);
-        }
-        
-        if (!_transactionRepository.AccountExists(request.toAccount))
-        {
-            ModelState.AddModelError("","Please make sure that destination account typed correctly");
-            return StatusCode(204, ModelState);
-        }
+        bool doPurchase = _transactionService.DoPurchase(request, ModelState);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
-        if (!_transactionRepository.DoPurchase(request.fromAccount, request.toAccount, request.amountToSend, request.purchaseType))
-        {
-            ModelState.AddModelError("", "Something went wrong while saving...");
-            return StatusCode(500, ModelState);
-        }
 
+        if (!doPurchase)
+            return StatusCode(500, ModelState);
         return Ok("Successfully transferred");
     }
     
-    [HttpGet("MakeTopUp/{accountId}/{amount}")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    public IActionResult DoPurchase(string accountId, double amount)
-    {
-        if (accountId == null || amount <= 0)
-            return BadRequest(ModelState);
-        
-        if (!_transactionRepository.AccountExists(accountId))
-        {
-            ModelState.AddModelError("","There is no such Account");
-            return StatusCode(403, ModelState);
-        }
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        
-        if (!_transactionRepository.MakeTopUp(accountId, amount))
-        {
-            ModelState.AddModelError("", "Something went wrong while saving...");
-            return StatusCode(500, ModelState);
-        }
-
-        return Ok("Successfully transferred");
-    }
+    // [HttpGet("MakeTopUp/{accountId}/{amount}")]
+    // [ProducesResponseType(200)]
+    // [ProducesResponseType(400)]
+    // public IActionResult DoPurchase(string accountId, double amount)
+    // {
+    //     if (accountId == null || amount <= 0)
+    //         return BadRequest(ModelState);
+    //     
+    //     if (!_transactionRepository.AccountExists(accountId))
+    //     {
+    //         ModelState.AddModelError("","There is no such Account");
+    //         return StatusCode(403, ModelState);
+    //     }
+    //
+    //     if (!ModelState.IsValid)
+    //         return BadRequest(ModelState);
+    //     
+    //     if (!_transactionRepository.MakeTopUp(accountId, amount))
+    //     {
+    //         ModelState.AddModelError("", "Something went wrong while saving...");
+    //         return StatusCode(500, ModelState);
+    //     }
+    //
+    //     return Ok("Successfully transferred");
+    // }
 }

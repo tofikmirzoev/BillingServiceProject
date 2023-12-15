@@ -28,74 +28,12 @@ public class TransactionRepository : ITransactionRepository
     {
         return _context.Accounts.Any(a => a.AccountId == accountId);
     }
-    
-    public bool GenerateTransaction(Transactions[] transactions)
+
+
+    public bool AddTransaction(Transactions transaction)
     {
-        for (int i = 0; i < transactions.Length; i++)
-        {
-            _context.Transactions.Add(transactions[i]);
-        }
+        _context.Add(transaction);
         return Save();
-    }
-    
-    public bool DoPurchase(string fromAccount, string toAccount, double amountToBeTransfered, string purchaseType)
-    {
-        var fromAccountObj = _context.Accounts.Where(a => a.AccountId == fromAccount).FirstOrDefault();
-        var toAccountObj = _context.Accounts.Where(a => a.AccountId == toAccount).FirstOrDefault();
-
-        // if (fromAccountObj == null || toAccountObj == null)
-        //     return false;
-
-        if (fromAccountObj.AccountBalance - amountToBeTransfered > 0)
-            fromAccountObj.AccountBalance -= amountToBeTransfered;
-        else
-            return false;
-        
-        toAccountObj.AccountBalance += amountToBeTransfered;
-        var senderTransaction = new Transactions()
-        {
-            TransactionDate = DateTime.Now,
-            TransactionType = purchaseType,
-            amount = amountToBeTransfered,
-            BalanceAfter = fromAccountObj.AccountBalance,
-            BalanceBefore = fromAccountObj.AccountBalance + amountToBeTransfered,
-            Account = fromAccountObj
-        };
-        
-        var receiverTransaction = new Transactions()
-        {
-            TransactionDate = DateTime.Now,
-            TransactionType = purchaseType,
-            amount = amountToBeTransfered,
-            BalanceAfter = toAccountObj.AccountBalance,
-            BalanceBefore = toAccountObj.AccountBalance - amountToBeTransfered,
-            Account = toAccountObj
-        };
-        
-        var result = GenerateTransaction(new Transactions[]{senderTransaction,receiverTransaction});
-        return result;
-    }
-    
-    public bool MakeTopUp(string accountId, double amount)
-    {
-        if (accountId == null)
-            return false;
-
-        var accountObj = _context.Accounts.Where(a => a.AccountId == accountId).FirstOrDefault();
-        accountObj.AccountBalance += amount;
-
-        var transaction = new Transactions()
-        {
-            TransactionDate = DateTime.Now,
-            TransactionType = "Top Up",
-            amount = amount,
-            BalanceAfter = accountObj.AccountBalance,
-            BalanceBefore = accountObj.AccountBalance - amount,
-            Account = accountObj
-        };
-        
-        var result = GenerateTransaction(new Transactions[]{transaction});
-        return result;
     }
     
     public bool Save()

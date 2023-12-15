@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "DZ0kZy4AD9bxgXfhhg8OjLeC782zcqHBCIC2n6QpYVf9+5UQVE32HP+ZQENbBIgdgEQBq2vnxui90auzaXL4DQ==",
+  "dgSpecHash": "n379VGrn4Zx22UxmhLNS+qI5McUVyaPU2XrGbBDF+MQvfVlE/nNjL/ipcsOd4mSx/Iurw/q8+NJNFeSkZDpLmw==",
   "success": true,
   "projectFilePath": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tmirzayev\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\tmirzayev\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "C:\\Users\\tmirzayev\\.nuget\\packages\\fluentvalidation\\11.8.1\\fluentvalidation.11.8.1.nupkg.sha512",
     "C:\\Users\\tmirzayev\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\tmirzayev\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\tmirzayev\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
