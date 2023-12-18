@@ -9,12 +9,15 @@ namespace BillingAPI.Repository.UnitOfWork;
 public class UnitOfWork : IDisposable
 {
     private bool disposed = false;
-    private static DbContextOptions<DataContext> options;
-    private DataContext _context = new DataContext(options);
+    private DataContext _context;
     private IAccountRepository _accountRepository;
     private ICustomerRepository _customerRepository;
     private ITransactionRepository _transactionRepository;
 
+    public UnitOfWork(DataContext context)
+    {
+        _context = context;
+    }
     public IAccountRepository Account
     {
         get

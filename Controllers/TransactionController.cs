@@ -1,6 +1,7 @@
 using AutoMapper;
 using BillingAPI.BillingMessages;
 using BillingAPI.Interfaces;
+using BillingAPI.ServiceIntefaces;
 using BillingAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,9 @@ public class TransactionController : Controller
 {
     private readonly ITransactionRepository _transactionRepository;
     private readonly IMapper _mapper;
-    private readonly TransactionService _transactionService;
+    private readonly ITransactionService _transactionService;
 
-    public TransactionController(ITransactionRepository transactionRepository, IMapper mapper, TransactionService transactionService)
+    public TransactionController(ITransactionRepository transactionRepository, IMapper mapper, ITransactionService transactionService)
     {
         _transactionRepository = transactionRepository;
         _mapper = mapper;
@@ -37,6 +38,7 @@ public class TransactionController : Controller
 
         if (!doPurchase)
             return StatusCode(500, ModelState);
+        
         return Ok("Successfully transferred");
     }
     

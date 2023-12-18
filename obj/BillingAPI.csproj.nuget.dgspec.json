@@ -1,29 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj": {}
+    "/Users/tofikmirzoev/RiderProjects/BillingAPI/BillingAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj": {
+    "/Users/tofikmirzoev/RiderProjects/BillingAPI/BillingAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj",
+        "projectUniqueName": "/Users/tofikmirzoev/RiderProjects/BillingAPI/BillingAPI.csproj",
         "projectName": "BillingAPI",
-        "projectPath": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj",
-        "packagesPath": "C:\\Users\\tmirzayev\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\obj\\",
+        "projectPath": "/Users/tofikmirzoev/RiderProjects/BillingAPI/BillingAPI.csproj",
+        "packagesPath": "/Users/tofikmirzoev/.nuget/packages/",
+        "outputPath": "/Users/tofikmirzoev/RiderProjects/BillingAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tmirzayev\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/tofikmirzoev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://azdo.simbrella.pro/DefaultCollection/_packaging/Simbrella.Feeds/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
@@ -99,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.403/RuntimeIdentifierGraph.json"
         }
       }
     }

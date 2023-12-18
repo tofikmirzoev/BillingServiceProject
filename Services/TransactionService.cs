@@ -26,7 +26,6 @@ public class TransactionService : ITransactionService
             return false;
         }
         
-        
         var fromAccountObj = _unitOfWork.Account.GetAccount(request.fromAccount);
         var toAccountObj = _unitOfWork.Account.GetAccount(request.toAccount);
         
@@ -81,7 +80,7 @@ public class TransactionService : ITransactionService
         return result;
     }
 
-    public bool GenerateTransaction(Transactions[] transactions)
+    private bool GenerateTransaction(Transactions[] transactions)
     {
         for (int i = 0; i < transactions.Length; i++)
         {
