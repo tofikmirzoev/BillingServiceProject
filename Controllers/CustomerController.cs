@@ -1,7 +1,9 @@
 using AutoMapper;
+using BillingAPI.BillingMessages;
 using BillingAPI.DTO;
 using BillingAPI.Interfaces;
 using BillingAPI.Models;
+using BillingAPI.ServiceIntefaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +14,15 @@ namespace BillingAPI.Controllers;
 public class CustomerController : Controller
 {
     private readonly ICustomerRepository _customerRepository;
-    private readonly IMapper _mapper;
+    private readonly ICustomerService _customerService;
 
-    public CustomerController(ICustomerRepository customerRepository, IMapper mapper)
+    public CustomerController(ICustomerRepository customerRepository, ICustomerService customerService)
     {
         _customerRepository = customerRepository;
-        _mapper = mapper;
+        _customerService = customerService;
     }
     
-    [HttpGet]
+    /*[HttpGet]
     [ProducesResponseType(200, Type = typeof(IEnumerable<CustomerDTO>))]
     public IActionResult GetAccounts()
     {
@@ -44,34 +46,21 @@ public class CustomerController : Controller
         
         var customer = _mapper.Map<CustomerDTO>(_customerRepository.GetCustomer(customerId));
         return Ok(customer);
-    }
-    
+    }  */  
     [HttpPost("addNewCustomer")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult AddCustomer([FromBody] CustomerDTO customerDto, [FromQuery] string accountId)
+    public IActionResult AddCustomer([FromBody] AddCustomerRequest request)
     {
-        if (customerDto == null || accountId == null)
+        if (request == null)
             return BadRequest(ModelState);
-            
-        var customerMap = _mapper.Map<Customer>(customerDto);
         
-        if (_customerRepository.CustomerExists(customerMap.CustomerId))
-        {
-            ModelState.AddModelError("","Customer is already exist");
-            return StatusCode(403, ModelState);
-        }
-
+        var result = _customerService.AddCustomer(request, ModelState);
+        
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        
-        if (!_customerRepository.AddCustomer(customerMap, accountId))
-        {
-            ModelState.AddModelError("", "Something went wrong while saving...");
-            return StatusCode(500, ModelState);
-        }
+            return BadRequest(ModelState); 
 
-        return Ok("Successfully created");
+        return Ok(result);
     }
     
 }

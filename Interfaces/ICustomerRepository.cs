@@ -8,5 +8,5 @@ public interface ICustomerRepository
     public Customer GetCustomer(string customerId);
     public bool CustomerExists(string customerId);
     public bool Save();
-    public bool AddCustomer(Customer customer, string accountId); 
+    public bool AddCustomer(Customer customer, string accountId, double balance); 
 }

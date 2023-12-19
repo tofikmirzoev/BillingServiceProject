@@ -17,13 +17,11 @@ namespace BillingAPI.Controllers;
 public class AccountController : Controller
 {
     private readonly IAccountRepository _accountRepository;
-    private readonly IMapper _mapper;
     private readonly IAccountService _accountService;
 
-    public AccountController(IAccountRepository accountRepository, IMapper mapper, IAccountService accountService)
+    public AccountController(IAccountRepository accountRepository, IAccountService accountService)
     {
         _accountRepository = accountRepository;
-        _mapper = mapper;
         _accountService = accountService;
     }
 
@@ -31,7 +29,7 @@ public class AccountController : Controller
     [ProducesResponseType(200, Type = typeof(IEnumerable<AccountDTO>))]
     public IActionResult GetAccounts()
     {
-        var accounts = _mapper.Map<List<AccountDTO>>(_accountService.GetAccounts());
+        var accounts = _accountService.GetAccounts();
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -43,7 +41,7 @@ public class AccountController : Controller
     [ProducesResponseType(400)]
     public IActionResult GetAccount(string accountId)
     {
-        var account = _mapper.Map<AccountDTO>(_accountService.GetAccount(accountId, ModelState));
+        var account = _accountService.GetAccount(accountId, ModelState);
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         

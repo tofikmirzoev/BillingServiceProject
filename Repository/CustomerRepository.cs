@@ -29,7 +29,7 @@ public class CustomerRepository : ICustomerRepository
         return _context.Customers.Any(c => c.CustomerId == customerId);
     }
 
-    public bool AddCustomer(Customer customer, string accountId)
+    public bool AddCustomer(Customer customer, string accountId, double balance)
     {
         var customerAccount = new CustomerAccount()
         {
@@ -37,7 +37,7 @@ public class CustomerRepository : ICustomerRepository
             Account = new Account()
             {
                 AccountId = accountId,
-                AccountBalance = 0,
+                AccountBalance = balance,
                 DateCreated = DateTime.Now
             }
         };
