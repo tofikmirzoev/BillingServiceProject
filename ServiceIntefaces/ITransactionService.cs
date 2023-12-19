@@ -7,5 +7,5 @@ namespace BillingAPI.ServiceIntefaces;
 public interface ITransactionService
 {
     public bool DoPurchase(DoPurchaseRequest request, ModelStateDictionary modelState);
-    public bool MakeTopUp(string accountId, double amount);
+    public bool MakeTopUp(TopUpRequest request, ModelStateDictionary modelStateDictionary);
 }

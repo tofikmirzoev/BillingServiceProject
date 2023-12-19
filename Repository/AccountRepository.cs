@@ -28,10 +28,9 @@ public class AccountRepository : IAccountRepository
         return _context.Accounts.Any(a => a.AccountId == accountId);
     }
     
-    public bool UpdateBalance(string accountId, double newBalance)
+    public bool UpdateBalance(Account account, double newBalance)
     {
-        var accountToUpdate = _context.Accounts.Where(a => a.AccountId == accountId).FirstOrDefault();
-        accountToUpdate.AccountBalance = newBalance;
+        account.AccountBalance = newBalance;
         return Save();
     }
 

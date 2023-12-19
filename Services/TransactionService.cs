@@ -3,6 +3,7 @@ using BillingAPI.Models;
 using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -58,21 +59,30 @@ public class TransactionService : ITransactionService
         return result;
     }
 
-    public bool MakeTopUp(string accountId, double amount)
+    public bool MakeTopUp(TopUpRequest request, ModelStateDictionary modelState)
     {
-        if (accountId == null)
+        if (request.accountId == null)
+        {
+            modelState.AddModelError("","AccountId is Null");
             return false;
+        }
 
-        var accountObj = _unitOfWork.Account.GetAccount(accountId);
-        accountObj.AccountBalance += amount;
+        if (!_unitOfWork.Account.AccountExists(request.accountId))
+        {
+            modelState.AddModelError("","Please check if the account is specified" +
+                                        "correctly");
+            return false;
+        }
+        var accountObj = _unitOfWork.Account.GetAccount(request.accountId);
+        accountObj.AccountBalance += request.topUpAmount;
 
         var transaction = new Transactions()
         {
             TransactionDate = DateTime.Now,
             TransactionType = "Top Up",
-            amount = amount,
+            amount = request.topUpAmount,
             BalanceAfter = accountObj.AccountBalance,
-            BalanceBefore = accountObj.AccountBalance - amount,
+            BalanceBefore = accountObj.AccountBalance - request.topUpAmount,
             Account = accountObj
         };
         

@@ -42,29 +42,23 @@ public class TransactionController : Controller
         return Ok("Successfully transferred");
     }
     
-    // [HttpGet("MakeTopUp/{accountId}/{amount}")]
-    // [ProducesResponseType(200)]
-    // [ProducesResponseType(400)]
-    // public IActionResult DoPurchase(string accountId, double amount)
-    // {
-    //     if (accountId == null || amount <= 0)
-    //         return BadRequest(ModelState);
-    //     
-    //     if (!_transactionRepository.AccountExists(accountId))
-    //     {
-    //         ModelState.AddModelError("","There is no such Account");
-    //         return StatusCode(403, ModelState);
-    //     }
-    //
-    //     if (!ModelState.IsValid)
-    //         return BadRequest(ModelState);
-    //     
-    //     if (!_transactionRepository.MakeTopUp(accountId, amount))
-    //     {
-    //         ModelState.AddModelError("", "Something went wrong while saving...");
-    //         return StatusCode(500, ModelState);
-    //     }
-    //
-    //     return Ok("Successfully transferred");
-    // }
+    [HttpPost("MakeTopUp")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult MakeTopUp([FromBody] TopUpRequest request)
+    {
+        
+        if (request == null)
+            return BadRequest(ModelState);
+
+        var makeTopUp = _transactionService.MakeTopUp(request,ModelState);
+        
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (!makeTopUp)
+            return StatusCode(500, ModelState);
+        
+        return Ok("Successfully transferred");
+    }
 }
