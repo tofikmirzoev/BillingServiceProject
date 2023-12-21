@@ -20,31 +20,31 @@ public class CustomerController : Controller
         _customerService = customerService;
     }
     
-    /*[HttpGet]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<CustomerDTO>))]
+    [HttpGet]
+    [ProducesResponseType(200)]
     public IActionResult GetAccounts()
     {
-        var customers = _mapper.Map<List<CustomerDTO>>(_customerRepository.GetCustomers());
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        var customersResult = _customerService.GetCustomers();
+        if (customersResult.IsFailed)
+            return BadRequest(customersResult.Reasons);
 
-        return Ok(customers);
+        return Ok(customersResult);
     }
 
     [HttpGet("{customerId}")]
-    [ProducesResponseType(200, Type = typeof(Account))]
+    [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult GetAccount(string customerId)
     {
-        if (!_customerRepository.CustomerExists(customerId))
-            return NotFound();
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        if (customerId == null)
+            return BadRequest("Account is null");
         
-        var customer = _mapper.Map<CustomerDTO>(_customerRepository.GetCustomer(customerId));
-        return Ok(customer);
-    }  */  
+        var customerResult =_customerService.GetCustomer(customerId);
+        if (customerResult.IsFailed)
+            return BadRequest(customerResult.Reasons);
+        
+        return Ok(customerResult);
+    }
     [HttpPost("addNewCustomer")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
@@ -54,7 +54,6 @@ public class CustomerController : Controller
             return BadRequest(ModelState);
         
         var result = _customerService.AddCustomer(request, ModelState);
-        
         if (!ModelState.IsValid)
             return BadRequest(ModelState); 
 
