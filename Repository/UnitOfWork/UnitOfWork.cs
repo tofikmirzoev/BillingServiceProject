@@ -23,9 +23,8 @@ public class UnitOfWork : IDisposable
         get
         {
             if (_accountRepository == null)
-            {
                 _accountRepository = new AccountRepository(_context);
-            }
+            
             return _accountRepository;
         }
     }
@@ -34,9 +33,8 @@ public class UnitOfWork : IDisposable
         get
         {
             if (_customerRepository == null)
-            {
                 _customerRepository = new CustomerRepository(_context);
-            }
+            
             return _customerRepository;
         }
     }
@@ -45,9 +43,8 @@ public class UnitOfWork : IDisposable
         get
         {
             if (_transactionRepository == null)
-            {
                 _transactionRepository = new TransactionRepository(_context);
-            }
+            
             return _transactionRepository;
         }
     }
@@ -56,9 +53,7 @@ public class UnitOfWork : IDisposable
         if (!this.disposed)
         {
             if (disposing)
-            {
                 _context.Dispose();
-            }
 
             this.disposed = true;
         }
