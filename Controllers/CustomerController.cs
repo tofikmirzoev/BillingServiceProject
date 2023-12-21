@@ -13,12 +13,10 @@ namespace BillingAPI.Controllers;
 [ApiController]
 public class CustomerController : Controller
 {
-    private readonly ICustomerRepository _customerRepository;
     private readonly ICustomerService _customerService;
 
-    public CustomerController(ICustomerRepository customerRepository, ICustomerService customerService)
+    public CustomerController(ICustomerService customerService)
     {
-        _customerRepository = customerRepository;
         _customerService = customerService;
     }
     

@@ -1,14 +1,8 @@
-using AutoMapper;
 using BillingAPI.BillingMessages;
-using BillingAPI.BillingResponses;
-using BillingAPI.Data;
 using BillingAPI.DTO;
-using BillingAPI.Interfaces;
-using BillingAPI.Models;
 using BillingAPI.ServiceIntefaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace BillingAPI.Controllers;
 
@@ -16,12 +10,10 @@ namespace BillingAPI.Controllers;
 [ApiController]
 public class AccountController : Controller
 {
-    private readonly IAccountRepository _accountRepository;
     private readonly IAccountService _accountService;
 
-    public AccountController(IAccountRepository accountRepository, IAccountService accountService)
+    public AccountController(IAccountService accountService)
     {
-        _accountRepository = accountRepository;
         _accountService = accountService;
     }
 
@@ -30,9 +22,9 @@ public class AccountController : Controller
     public IActionResult GetAccounts()
     {
         var accounts = _accountService.GetAccounts();
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
+        if (accounts.IsFailed)
+            return BadRequest(accounts.Reasons);
+        
         return Ok(accounts);
     }
 
@@ -41,11 +33,11 @@ public class AccountController : Controller
     [ProducesResponseType(400)]
     public IActionResult GetAccount(string accountId)
     {
-        var account = _accountService.GetAccount(accountId, ModelState);
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        var accountResult = _accountService.GetAccount(accountId);
+        if (accountResult.IsFailed)
+            return BadRequest(accountResult.Reasons);
         
-        return Ok(account);
+        return Ok(accountResult);
     }
 
     [HttpPost("UpdateBalance")]
@@ -56,11 +48,11 @@ public class AccountController : Controller
         if (request == null)
             return BadRequest(ModelState);
 
-        var result = _accountService.UpdateBalance(request, ModelState);
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        var updateBalanceResult = _accountService.UpdateBalance(request);
+        if (updateBalanceResult.IsFailed)
+            return BadRequest(updateBalanceResult.Reasons);
         
-        return Ok(result);
+        return Ok(updateBalanceResult);
     }
     
     // [HttpPost("registerAccount/{customerId}")]

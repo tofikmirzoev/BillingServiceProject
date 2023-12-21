@@ -20,7 +20,7 @@ public class AccountRepository : IAccountRepository
 
     public Account GetAccount(string accountId)
     {
-        return _context.Accounts.Where(a => a.AccountId == accountId).FirstOrDefault();
+        return _context.Accounts.Where(a => a.AccountId == accountId).FirstOrDefault() ?? throw new InvalidOperationException();
     }
 
     public bool AccountExists(string accountId)

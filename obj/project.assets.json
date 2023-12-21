@@ -31,6 +31,23 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "FluentResults/3.15.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.1",
+          "System.Threading.Tasks.Extensions": "4.5.4"
+        },
+        "compile": {
+          "lib/netstandard2.1/FluentResults.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/FluentResults.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "FluentValidation/11.8.1": {
         "type": "package",
         "compile": {
@@ -328,7 +345,7 @@
           }
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
+      "Microsoft.Extensions.Logging.Abstractions/6.0.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -852,6 +869,15 @@
           }
         }
       },
+      "System.Threading.Tasks.Extensions/4.5.4": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.1/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/_._": {}
+        }
+      },
       "System.Windows.Extensions/4.7.0": {
         "type": "package",
         "dependencies": {
@@ -904,6 +930,22 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
+      ]
+    },
+    "FluentResults/3.15.2": {
+      "sha512": "yR3PD1SWKirYNpQ/t9TjJrsp1adazMmozLDPeamvSIljLAIjS0EQyyGvoupWsbZEryqW9SHbKXVL8YaJwURk8w==",
+      "type": "package",
+      "path": "fluentresults/3.15.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "FluentResults-Icon-128.png",
+        "fluentresults.3.15.2.nupkg.sha512",
+        "fluentresults.nuspec",
+        "lib/netstandard2.0/FluentResults.dll",
+        "lib/netstandard2.0/FluentResults.xml",
+        "lib/netstandard2.1/FluentResults.dll",
+        "lib/netstandard2.1/FluentResults.xml"
       ]
     },
     "FluentValidation/11.8.1": {
@@ -1314,10 +1356,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
-      "sha512": "/HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA==",
+    "Microsoft.Extensions.Logging.Abstractions/6.0.1": {
+      "sha512": "dzB2Cgg+JmrouhjkcQGzSFjjvpwlq353i8oBQO2GWNjCXSzhbtBRUf28HSauWe7eib3wYOdb3tItdjRwAdwCSg==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/6.0.0",
+      "path": "microsoft.extensions.logging.abstractions/6.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1361,7 +1403,7 @@
         "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.6.0.1.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2196,6 +2238,43 @@
         "version.txt"
       ]
     },
+    "System.Threading.Tasks.Extensions/4.5.4": {
+      "sha512": "zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
+      "type": "package",
+      "path": "system.threading.tasks.extensions/4.5.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.Threading.Tasks.Extensions.dll",
+        "lib/net461/System.Threading.Tasks.Extensions.xml",
+        "lib/netcoreapp2.1/_._",
+        "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll",
+        "lib/netstandard1.0/System.Threading.Tasks.Extensions.xml",
+        "lib/netstandard2.0/System.Threading.Tasks.Extensions.dll",
+        "lib/netstandard2.0/System.Threading.Tasks.Extensions.xml",
+        "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll",
+        "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/netcoreapp2.1/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.threading.tasks.extensions.4.5.4.nupkg.sha512",
+        "system.threading.tasks.extensions.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Windows.Extensions/4.7.0": {
       "sha512": "CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "type": "package",
@@ -2222,6 +2301,7 @@
     "net7.0": [
       "AutoMapper >= 12.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
+      "FluentResults >= 3.15.2",
       "FluentValidation >= 11.8.1",
       "Microsoft.EntityFrameworkCore >= 6.0.1",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.1",
@@ -2232,25 +2312,28 @@
     ]
   },
   "packageFolders": {
-    "/Users/tofikmirzoev/.nuget/packages/": {}
+    "C:\\Users\\tmirzayev\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tofikmirzoev/RiderProjects/BillingAPI/BillingAPI.csproj",
+      "projectUniqueName": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj",
       "projectName": "BillingAPI",
-      "projectPath": "/Users/tofikmirzoev/RiderProjects/BillingAPI/BillingAPI.csproj",
-      "packagesPath": "/Users/tofikmirzoev/.nuget/packages/",
-      "outputPath": "/Users/tofikmirzoev/RiderProjects/BillingAPI/obj/",
+      "projectPath": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\BillingAPI.csproj",
+      "packagesPath": "C:\\Users\\tmirzayev\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tmirzayev\\RiderProjects\\BillingService\\BillingServiceProject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/tofikmirzoev/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\tmirzayev\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://azdo.simbrella.pro/DefaultCollection/_packaging/Simbrella.Feeds/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
@@ -2275,6 +2358,10 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": {
             "target": "Package",
             "version": "[12.0.1, )"
+          },
+          "FluentResults": {
+            "target": "Package",
+            "version": "[3.15.2, )"
           },
           "FluentValidation": {
             "target": "Package",
@@ -2326,7 +2413,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.403/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -134,3 +134,4 @@ C:\Users\tmirzayev\RiderProjects\BillingService\BillingServiceProject\obj\Debug\
 C:\Users\tmirzayev\RiderProjects\BillingService\BillingServiceProject\obj\Debug\net7.0\BillingAPI.pdb
 C:\Users\tmirzayev\RiderProjects\BillingService\BillingServiceProject\obj\Debug\net7.0\BillingAPI.genruntimeconfig.cache
 C:\Users\tmirzayev\RiderProjects\BillingService\BillingServiceProject\obj\Debug\net7.0\ref\BillingAPI.dll
+C:\Users\tmirzayev\RiderProjects\BillingService\BillingServiceProject\bin\Debug\net7.0\FluentResults.dll

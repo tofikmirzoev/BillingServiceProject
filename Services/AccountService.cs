@@ -5,7 +5,7 @@ using BillingAPI.DTO;
 using BillingAPI.Models;
 using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using FluentResults;
 
 namespace BillingAPI.Services;
 
@@ -17,35 +17,33 @@ public class AccountService : IAccountService
     public AccountService(UnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     
-    public ICollection<AccountDTO> GetAccounts()
+    public Result<ICollection<AccountDTO>> GetAccounts()
     {
-        return _mapper.Map<ICollection<AccountDTO>>(_unitOfWork.Account.GetAccounts());
+        return Result.Ok(_mapper.Map<ICollection<AccountDTO>>(_unitOfWork.Account.GetAccounts()));
     }
 
-    public AccountDTO GetAccount(string accountId, ModelStateDictionary modelState)
+    public Result<AccountDTO> GetAccount(string accountId)
     {
         if (!_unitOfWork.Account.AccountExists(accountId))
-        {
-            modelState.AddModelError("", "Account does not exists");
-            return null;
-        }
-        return _mapper.Map<AccountDTO>(_unitOfWork.Account.GetAccount(accountId));
+            return Result.Fail<AccountDTO>("Account does not exists");
+
+        var accountDto = _mapper.Map<AccountDTO>(_unitOfWork.Account.GetAccount(accountId));
+        return Result.Ok(accountDto);
     }
     
-    public bool UpdateBalance(UpdateBalanceRequest request, ModelStateDictionary modelState)
+    public Result UpdateBalance(UpdateBalanceRequest request)
     {
         if (request.accountId == null || request.newBanalce < 0)
         {
-            modelState.AddModelError("", "Wrong request, Please check request parameters");
-            return false;
+            return Result.Fail("Account Id or Amount is wrong");
         }
 
         if (!_unitOfWork.Account.AccountExists(request.accountId))
         {
-            modelState.AddModelError("", "Account does not exists");
-            return false;
+            return Result.Fail("Account does not exists");
         }
 
         var account = _unitOfWork.Account.GetAccount(request.accountId);
@@ -62,18 +60,16 @@ public class AccountService : IAccountService
         var updateBalanceResult =  _unitOfWork.Account.UpdateBalance(account, request.newBanalce);
         if (!updateBalanceResult)
         {
-            modelState.AddModelError("", "Something went wrong");
-            return false;
+            return Result.Fail("Something went wrong");
         }
         
         var transactionAddingResult = _unitOfWork.Tranasctions.AddTransaction(updateBalanceTransaction);
         if (!transactionAddingResult)
         {
-            modelState.AddModelError("", "Transaction failed");
-            return false;
+            return Result.Fail("Transaction failed");
         }
 
-        return true;
+        return Result.Ok();
     }
     
     public RegisterAccountResponse RegisterAccountResponse(RegisterAccountRequest request)

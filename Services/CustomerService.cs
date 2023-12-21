@@ -4,6 +4,7 @@ using BillingAPI.DTO;
 using BillingAPI.Models;
 using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BillingAPI.Services;
@@ -18,43 +19,35 @@ public class CustomerService : ICustomerService
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public ICollection<CustomerDTO> GetCustomers()
+    public Result<ICollection<CustomerDTO>> GetCustomers()
     {
-        return _mapper.Map<ICollection<CustomerDTO>>(_unitOfWork.Customer.GetCustomers());
+        return Result.Ok(_mapper.Map<ICollection<CustomerDTO>>(_unitOfWork.Customer.GetCustomers()));
     }
 
-    public CustomerDTO GetCustomer(string customerId)
+    public Result<CustomerDTO> GetCustomer(string customerId)
     {
-        return _mapper.Map<CustomerDTO>(_unitOfWork.Customer.GetCustomer(customerId));
+        if(_unitOfWork.Customer.CustomerExists(customerId))
+            return Result.Fail<CustomerDTO>("Customer does not exists");
+
+        var customerDto = _mapper.Map<CustomerDTO>(_unitOfWork.Customer.GetCustomer(customerId));
+        return Result.Ok(customerDto);
     }
 
-    public bool AddCustomer(AddCustomerRequest request,ModelStateDictionary modelState)
+    public Result AddCustomer(AddCustomerRequest request,ModelStateDictionary modelState)
     {
         if (request.accountId == null || request._customerDto == null)
-        {
-            modelState.AddModelError("", "Wrong request, Please check request parameters");
-            return false;
-        }
+            return Result.Fail("Wrong request, Please check request parameters");
 
         if (_unitOfWork.Customer.CustomerExists(request._customerDto.CustomerId))
-        {
-            modelState.AddModelError("","Customer is already exist");
-            return false;
-        }
+            return Result.Fail("Customer already exist");
 
         if (_unitOfWork.Account.AccountExists(request.accountId))
-        {
-            modelState.AddModelError("","Account is already exist");
-            return false;
-        }
+            return Result.Fail("Account already exist");
 
         var customer = _mapper.Map<Customer>(request._customerDto);
         var addCustomerResult = _unitOfWork.Customer.AddCustomer(customer, request.accountId, request.balance);
         if (!addCustomerResult)
-        {
-            modelState.AddModelError("", "Something went wrong");
-            return false;
-        }
+            return Result.Fail("Something went wrong");
 
         var accountRegistrationTransaction = new Transactions()
         {
@@ -68,11 +61,8 @@ public class CustomerService : ICustomerService
 
         var transactionAddingResult = _unitOfWork.Tranasctions.AddTransaction(accountRegistrationTransaction);
         if (!transactionAddingResult)
-        {
-            modelState.AddModelError("", "Transaction failed");
-            return false;
-        }
+            return Result.Fail("Transaction failed");
 
-        return true;
+        return Result.Ok();
     }
 }

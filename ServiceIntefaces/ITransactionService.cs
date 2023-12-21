@@ -1,11 +1,10 @@
 using BillingAPI.BillingMessages;
-using BillingAPI.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using FluentResults;
 
 namespace BillingAPI.ServiceIntefaces;
 
 public interface ITransactionService
 {
-    public bool DoPurchase(DoPurchaseRequest request, ModelStateDictionary modelState);
-    public bool MakeTopUp(TopUpRequest request, ModelStateDictionary modelStateDictionary);
+    public Result DoPurchase(DoPurchaseRequest request);
+    public Result MakeTopUp(TopUpRequest request);
 }

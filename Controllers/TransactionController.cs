@@ -1,8 +1,5 @@
-using AutoMapper;
 using BillingAPI.BillingMessages;
-using BillingAPI.Interfaces;
 using BillingAPI.ServiceIntefaces;
-using BillingAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAPI.Controllers;
@@ -11,14 +8,10 @@ namespace BillingAPI.Controllers;
 [ApiController]
 public class TransactionController : Controller
 {
-    private readonly ITransactionRepository _transactionRepository;
-    private readonly IMapper _mapper;
     private readonly ITransactionService _transactionService;
 
-    public TransactionController(ITransactionRepository transactionRepository, IMapper mapper, ITransactionService transactionService)
+    public TransactionController(ITransactionService transactionService)
     {
-        _transactionRepository = transactionRepository;
-        _mapper = mapper;
         _transactionService = transactionService;
     }
     
@@ -31,34 +24,25 @@ public class TransactionController : Controller
         if (request == null)
             return BadRequest(ModelState);
         
-        bool doPurchase = _transactionService.DoPurchase(request, ModelState);
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        if (!doPurchase)
-            return StatusCode(500, ModelState);
+        var doPurchaseResult = _transactionService.DoPurchase(request);
+        if (doPurchaseResult.IsFailed)
+            return BadRequest(doPurchaseResult.Reasons);
         
-        return Ok("Successfully transferred");
+        return Ok(doPurchaseResult);
     }
-    
+
     [HttpPost("MakeTopUp")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult MakeTopUp([FromBody] TopUpRequest request)
     {
-        
         if (request == null)
             return BadRequest(ModelState);
 
-        var makeTopUp = _transactionService.MakeTopUp(request,ModelState);
-        
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        var makeTopUpResult = _transactionService.MakeTopUp(request);
+        if (makeTopUpResult.IsFailed)
+            return BadRequest(makeTopUpResult.Reasons);
 
-        if (!makeTopUp)
-            return StatusCode(500, ModelState);
-        
-        return Ok("Successfully transferred");
+        return Ok(makeTopUpResult);
     }
 }

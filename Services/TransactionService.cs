@@ -1,31 +1,28 @@
+using AutoMapper;
 using BillingAPI.BillingMessages;
 using BillingAPI.Models;
 using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;
-using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using FluentResults;
 
 namespace BillingAPI.Services;
 
 public class TransactionService : ITransactionService
 {
-    private UnitOfWork _unitOfWork { get; }
-    public TransactionService(UnitOfWork unitOfWork)
+    private readonly UnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+    public TransactionService(UnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     
-    public bool DoPurchase(DoPurchaseRequest request, ModelStateDictionary modelState)
+    public Result DoPurchase(DoPurchaseRequest request)
     {
         if (!_unitOfWork.Account.AccountExists(request.fromAccount) ||
             !_unitOfWork.Account.AccountExists(request.toAccount))
-        {
-            modelState.AddModelError("","Please check if the account is specified" +
-                                        "correctly");
-            return false;
-        }
+            return Result.Fail("Please check if the account is specified" +
+                               "correctly");
         
         var fromAccountObj = _unitOfWork.Account.GetAccount(request.fromAccount);
         var toAccountObj = _unitOfWork.Account.GetAccount(request.toAccount);
@@ -33,7 +30,8 @@ public class TransactionService : ITransactionService
         if (fromAccountObj.AccountBalance - request.amountToSend > 0)
             fromAccountObj.AccountBalance -= request.amountToSend;
         else
-            return false;
+            return Result.Fail("Not enough balance");
+        
         toAccountObj.AccountBalance += request.amountToSend;
         var senderTransaction = new Transactions()
         {
@@ -55,24 +53,21 @@ public class TransactionService : ITransactionService
             Account = toAccountObj
         };
 
-        var result = GenerateTransaction(new Transactions[] { senderTransaction, receiverTransaction });
-        return result;
+        if (!GenerateTransaction(new Transactions[] { senderTransaction, receiverTransaction }))
+            return Result.Fail("Transaction failed");
+        
+        return Result.Ok();
     }
 
-    public bool MakeTopUp(TopUpRequest request, ModelStateDictionary modelState)
+    public Result MakeTopUp(TopUpRequest request)
     {
         if (request.accountId == null)
-        {
-            modelState.AddModelError("","AccountId is Null");
-            return false;
-        }
-
+            return Result.Fail("AccountId is Null");
+        
         if (!_unitOfWork.Account.AccountExists(request.accountId))
-        {
-            modelState.AddModelError("","Please check if the account is specified" +
-                                        "correctly");
-            return false;
-        }
+            return Result.Fail("Please check if the account is specified" +
+                               "correctly");
+        
         var accountObj = _unitOfWork.Account.GetAccount(request.accountId);
         accountObj.AccountBalance += request.topUpAmount;
 
@@ -85,9 +80,11 @@ public class TransactionService : ITransactionService
             BalanceBefore = accountObj.AccountBalance - request.topUpAmount,
             Account = accountObj
         };
+
+        if (!GenerateTransaction(new Transactions[] { transaction }))
+            return Result.Fail("Transaction failed");
         
-        var result = GenerateTransaction(new Transactions[]{transaction});
-        return result;
+        return Result.Ok();
     }
 
     private bool GenerateTransaction(Transactions[] transactions)

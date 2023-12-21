@@ -10,6 +10,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "FluentResults": "3.15.2",
           "FluentValidation": "11.8.1",
           "Microsoft.EntityFrameworkCore": "6.0.1",
           "Microsoft.EntityFrameworkCore.Design": "6.0.1",
@@ -42,6 +43,18 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {
             "assemblyVersion": "12.0.0.0",
             "fileVersion": "12.0.1.0"
+          }
+        }
+      },
+      "FluentResults/3.15.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.1",
+          "System.Threading.Tasks.Extensions": "4.5.4"
+        },
+        "runtime": {
+          "lib/netstandard2.1/FluentResults.dll": {
+            "assemblyVersion": "3.15.2.0",
+            "fileVersion": "3.15.2.0"
           }
         }
       },
@@ -101,22 +114,22 @@
           "runtimes/win-arm/native/Microsoft.Data.SqlClient.SNI.dll": {
             "rid": "win-arm",
             "assetType": "native",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "2.1.1.0"
           },
           "runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "2.1.1.0"
           },
           "runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "2.1.1.0"
           },
           "runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "2.1.1.0"
           }
         }
       },
@@ -191,7 +204,7 @@
         "dependencies": {
           "Microsoft.Extensions.Caching.Abstractions": "6.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.1",
           "Microsoft.Extensions.Options": "6.0.0",
           "Microsoft.Extensions.Primitives": "6.0.0"
         }
@@ -212,12 +225,12 @@
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.1",
           "Microsoft.Extensions.Options": "6.0.0",
           "System.Diagnostics.DiagnosticSource": "6.0.0"
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/6.0.0": {},
+      "Microsoft.Extensions.Logging.Abstractions/6.0.1": {},
       "Microsoft.Extensions.Options/6.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
@@ -478,6 +491,7 @@
           "Microsoft.NETCore.Platforms": "3.1.0"
         }
       },
+      "System.Threading.Tasks.Extensions/4.5.4": {},
       "System.Windows.Extensions/4.7.0": {
         "dependencies": {
           "System.Drawing.Common": "4.7.0"
@@ -518,6 +532,13 @@
       "sha512": "sha512-+g/K+Vpe3gGMKGzjslMOdqNlkikScDjWfVvmWTayrDHaG/n2pPmFBMa+jKX1r/h6BDGFdkyRjAuhFE3ykW+r1g==",
       "path": "automapper.extensions.microsoft.dependencyinjection/12.0.1",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512"
+    },
+    "FluentResults/3.15.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yR3PD1SWKirYNpQ/t9TjJrsp1adazMmozLDPeamvSIljLAIjS0EQyyGvoupWsbZEryqW9SHbKXVL8YaJwURk8w==",
+      "path": "fluentresults/3.15.2",
+      "hashPath": "fluentresults.3.15.2.nupkg.sha512"
     },
     "FluentValidation/11.8.1": {
       "type": "package",
@@ -638,12 +659,12 @@
       "path": "microsoft.extensions.logging/6.0.0",
       "hashPath": "microsoft.extensions.logging.6.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
+    "Microsoft.Extensions.Logging.Abstractions/6.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA==",
-      "path": "microsoft.extensions.logging.abstractions/6.0.0",
-      "hashPath": "microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512"
+      "sha512": "sha512-dzB2Cgg+JmrouhjkcQGzSFjjvpwlq353i8oBQO2GWNjCXSzhbtBRUf28HSauWe7eib3wYOdb3tItdjRwAdwCSg==",
+      "path": "microsoft.extensions.logging.abstractions/6.0.1",
+      "hashPath": "microsoft.extensions.logging.abstractions.6.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Options/6.0.0": {
       "type": "package",
@@ -840,6 +861,13 @@
       "sha512": "sha512-aeu4FlaUTemuT1qOd1MyU4T516QR4Fy+9yDbwWMPHOHy7U8FD6SgTzdZFO7gHcfAPHtECqInbwklVvUK4RHcNg==",
       "path": "system.text.encoding.codepages/4.7.0",
       "hashPath": "system.text.encoding.codepages.4.7.0.nupkg.sha512"
+    },
+    "System.Threading.Tasks.Extensions/4.5.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
+      "path": "system.threading.tasks.extensions/4.5.4",
+      "hashPath": "system.threading.tasks.extensions.4.5.4.nupkg.sha512"
     },
     "System.Windows.Extensions/4.7.0": {
       "type": "package",
