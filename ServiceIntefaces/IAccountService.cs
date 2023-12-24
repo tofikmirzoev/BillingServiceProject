@@ -13,4 +13,5 @@ public interface IAccountService
     public Result<AccountDTO> GetAccount(string accountId);
     public Result UpdateBalance(UpdateBalanceRequest request);
     public RegisterAccountResponse RegisterAccountResponse(RegisterAccountRequest request);
+    public Result RemoveAccount(string accountId);
 }

@@ -11,7 +11,6 @@ namespace BillingAPI.Controllers;
 public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
-
     public AccountController(IAccountService accountService)
     {
         _accountService = accountService;
@@ -55,6 +54,20 @@ public class AccountController : Controller
         return Ok(updateBalanceResult);
     }
     
+    [HttpGet("deleteAccount/{accountId}")]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400)]
+    public IActionResult UpdateBalance(string accountId)
+    {
+        if (accountId == null)
+            return BadRequest(ModelState);
+
+        var removeAccountResult = _accountService.RemoveAccount(accountId);
+        if (removeAccountResult.IsFailed)
+            return BadRequest(removeAccountResult.Reasons);
+        
+        return Ok(removeAccountResult);
+    }
     // [HttpPost("registerAccount/{customerId}")]
     // [ProducesResponseType(200)]
     // [ProducesResponseType(400)]

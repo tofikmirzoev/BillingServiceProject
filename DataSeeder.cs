@@ -34,6 +34,7 @@ public class DataSeeder
                         AccountId = "tofik01",
                         DateCreated = new DateTime(2020, 01, 11),
                         AccountBalance = 6000,
+                        Removed = false,
                         TransactionsCollection = new List<Transactions>()
                         {
                             new Transactions()
@@ -71,6 +72,7 @@ public class DataSeeder
                         AccountId = "inara01",
                         DateCreated = new DateTime(2021, 11, 6),
                         AccountBalance = 3500,
+                        Removed = false,
                         TransactionsCollection = new List<Transactions>()
                         {
                             new Transactions()

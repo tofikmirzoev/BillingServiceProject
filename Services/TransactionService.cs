@@ -96,12 +96,46 @@ public class TransactionService : ITransactionService
 
         if (!_unitOfWork.Account.AccountExists((request.accountId)) ||
             !_unitOfWork.Account.AccountExists(request.creditAccountId))
-            return Result.Fail<CollectionResponse>("Account does not exist");
+            return Result.Ok(new CollectionResponse(){resultCode = 2, resultDescribtion = "Account does not exists", collectedAmount = 0});
 
-        var accounttoCredit = _unitOfWork.Account.GetAccount(request.accountId);
+        var accountToCredit = _unitOfWork.Account.GetAccount(request.accountId);
         var creditAccount = _unitOfWork.Account.GetAccount(request.creditAccountId);
+
+        var amountToCollect = CalculateAmountToCollect(accountToCredit.AccountBalance, request.ammountToCollect);
+        if (amountToCollect == 0)
+            return Result.Ok(new CollectionResponse(){resultCode = 1, resultDescribtion = "Not enough money", collectedAmount = 0});
+        else
+        {
+            accountToCredit.AccountBalance -= amountToCollect;
+            creditAccount.AccountBalance += amountToCollect;
+        }
         
+        var collectionTransaction = new Transactions()
+        {
+            TransactionDate = DateTime.Now,
+            TransactionType = "Collection",
+            amount = amountToCollect,
+            BalanceAfter = accountToCredit.AccountBalance,
+            BalanceBefore = accountToCredit.AccountBalance + amountToCollect,
+            Account = accountToCredit
+        };
         
+        var refundedTransaction = new Transactions()
+        {
+            TransactionDate = DateTime.Now,
+            TransactionType = "Refunded amount",
+            amount = amountToCollect,
+            BalanceAfter = creditAccount.AccountBalance,
+            BalanceBefore = creditAccount.AccountBalance - amountToCollect,
+            Account = creditAccount
+        };
+
+        var transactionResult = GenerateTransaction(new Transactions[] { collectionTransaction, 
+            refundedTransaction });
+        if (!transactionResult)
+            return Result.Fail<CollectionResponse>("Transaction failed");
+
+        return Result.Ok(new CollectionResponse(){resultCode = 0, resultDescribtion = "Successful", collectedAmount = amountToCollect});
     }
 
     public Result Disburse()
@@ -109,6 +143,18 @@ public class TransactionService : ITransactionService
         throw new NotImplementedException();
     }
 
+    private double CalculateAmountToCollect(double accountBalance, double maxAmountToCollect)
+    {
+        if (accountBalance == 0)
+            return 0;
+        
+        if (accountBalance >= maxAmountToCollect)
+            return maxAmountToCollect;
+
+        var amountDifference = maxAmountToCollect - accountBalance;
+        return maxAmountToCollect - amountDifference;
+    }
+    
     private bool GenerateTransaction(Transactions[] transactions)
     {
         for (int i = 0; i < transactions.Length; i++)

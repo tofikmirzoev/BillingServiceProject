@@ -49,7 +49,13 @@ public class AccountRepository : IAccountRepository
         _context.Add(customerAccount);
         return Save();
     }
-    
+
+    public bool DeleteAccount(Account account)
+    {
+        _context.Accounts.Where(a => a.AccountId == account.AccountId).FirstOrDefault().Removed = true;
+        return Save();
+    }
+
     public bool Save()
     {
         var saved = _context.SaveChanges();

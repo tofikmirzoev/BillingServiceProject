@@ -9,7 +9,6 @@ namespace BillingAPI.Controllers;
 public class TransactionController : Controller
 {
     private readonly ITransactionService _transactionService;
-
     public TransactionController(ITransactionService transactionService)
     {
         _transactionService = transactionService;
@@ -44,5 +43,20 @@ public class TransactionController : Controller
             return BadRequest(makeTopUpResult.Reasons);
 
         return Ok(makeTopUpResult);
+    }
+    
+    [HttpPost("Collection")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult Collection([FromBody] CollectionRequest request)
+    {
+        if (request == null)
+            return BadRequest(ModelState);
+
+        var collectionResult = _transactionService.Collect(request);
+        if (collectionResult.IsFailed)
+            return BadRequest(collectionResult.Reasons);
+
+        return Ok(collectionResult);
     }
 }

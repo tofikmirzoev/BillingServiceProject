@@ -37,15 +37,11 @@ public class AccountService : IAccountService
     public Result UpdateBalance(UpdateBalanceRequest request)
     {
         if (request.accountId == null || request.newBanalce < 0)
-        {
             return Result.Fail("Account Id or Amount is wrong");
-        }
 
         if (!_unitOfWork.Account.AccountExists(request.accountId))
-        {
             return Result.Fail("Account does not exists");
-        }
-
+        
         var account = _unitOfWork.Account.GetAccount(request.accountId);
         var updateBalanceTransaction = new Transactions()
         {
@@ -75,5 +71,15 @@ public class AccountService : IAccountService
     public RegisterAccountResponse RegisterAccountResponse(RegisterAccountRequest request)
     {
         throw new NotImplementedException();
+    }
+
+    public Result RemoveAccount(string accountId)
+    {
+        if (!_unitOfWork.Account.AccountExists(accountId))
+            return Result.Fail("Account does not exist");
+        
+        var account = _unitOfWork.Account.GetAccount(accountId);
+        _unitOfWork.Account.DeleteAccount(account);
+        return Result.Ok();
     }
 }

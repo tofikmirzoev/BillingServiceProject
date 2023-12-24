@@ -9,5 +9,6 @@ public interface IAccountRepository
     public bool AccountExists(string accountId);
     public bool UpdateBalance(Account account, double newBalance);
     public bool AddAccount(Account account, string customerId);
+    public bool DeleteAccount(Account accountId);
     public bool Save();
 }
