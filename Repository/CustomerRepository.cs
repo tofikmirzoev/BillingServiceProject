@@ -45,7 +45,13 @@ public class CustomerRepository : ICustomerRepository
         _context.Add(customerAccount);
         return Save();
     }
-    
+
+    public bool DeleteCustomer(Customer customer)
+    {
+        _context.Remove(customer);
+        return Save();
+    }
+
     public bool Save()
     {
         var saved = _context.SaveChanges();

@@ -44,7 +44,7 @@ public class CustomerController : Controller
         
         return Ok(customerResult);
     }
-    [HttpPost("addNewCustomer")]
+    [HttpPost("/AddNewCustomer")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult AddCustomer([FromBody] AddCustomerRequest request)

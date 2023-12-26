@@ -24,6 +24,11 @@ public class AccountService : IAccountService
     {
         return Result.Ok(_mapper.Map<ICollection<AccountDTO>>(_unitOfWork.Account.GetAccounts()));
     }
+    
+    public Result<ICollection<AccountDTO>> GetAllAccounts()
+    {
+        return Result.Ok(_mapper.Map<ICollection<AccountDTO>>(_unitOfWork.Account.GetAllAccounts()));
+    }
 
     public Result<AccountDTO> GetAccount(string accountId)
     {
@@ -80,6 +85,19 @@ public class AccountService : IAccountService
         
         var account = _unitOfWork.Account.GetAccount(accountId);
         _unitOfWork.Account.DeleteAccount(account);
+        return Result.Ok();
+    }
+
+    public Result RecoverAccount(string accountId)
+    {
+        if(_unitOfWork.Account.AccountExists(accountId))
+            return Result.Fail("Account not been deleted");
+        
+        var account = _unitOfWork.Account.GetRemovedAccount(accountId);
+        if (account == null)
+            return Result.Fail("There is no such account");
+        
+        _unitOfWork.Account.RecoverAccount(account);
         return Result.Ok();
     }
 }

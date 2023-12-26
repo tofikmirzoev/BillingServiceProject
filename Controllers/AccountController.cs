@@ -39,7 +39,7 @@ public class AccountController : Controller
         return Ok(accountResult);
     }
 
-    [HttpPost("UpdateBalance")]
+    [HttpPatch("/NewBalance")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400)]
     public IActionResult UpdateBalance([FromBody] UpdateBalanceRequest request)
@@ -54,10 +54,10 @@ public class AccountController : Controller
         return Ok(updateBalanceResult);
     }
     
-    [HttpGet("deleteAccount/{accountId}")]
+    [HttpDelete("/{accountId}")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400)]
-    public IActionResult UpdateBalance(string accountId)
+    public IActionResult DeleteAccount(string accountId)
     {
         if (accountId == null)
             return BadRequest(ModelState);
@@ -68,6 +68,22 @@ public class AccountController : Controller
         
         return Ok(removeAccountResult);
     }
+    
+    [HttpPut("/Restore/{accountId}")]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400)]
+    public IActionResult RecoverAccount(string accountId)
+    {
+        if (accountId == null)
+            return BadRequest(ModelState);
+
+        var recoveryResult = _accountService.RecoverAccount(accountId);
+        if (recoveryResult.IsFailed)
+            return BadRequest(recoveryResult.Reasons);
+        
+        return Ok(recoveryResult);
+    }
+    
     // [HttpPost("registerAccount/{customerId}")]
     // [ProducesResponseType(200)]
     // [ProducesResponseType(400)]

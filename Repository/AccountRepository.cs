@@ -15,17 +15,32 @@ public class AccountRepository : IAccountRepository
     
     public ICollection<Account> GetAccounts()
     {
+        return _context.Accounts.Where(a => a.Removed ==false).OrderBy(a => a.DateCreated).ToList();
+    }
+
+    public ICollection<Account> GetAllAccounts()
+    {
         return _context.Accounts.OrderBy(a => a.DateCreated).ToList();
     }
 
     public Account GetAccount(string accountId)
     {
-        return _context.Accounts.Where(a => a.AccountId == accountId).FirstOrDefault() ?? throw new InvalidOperationException();
+        return _context.Accounts.Where(a => a.AccountId == accountId && a.Removed == false).FirstOrDefault();
     }
 
+    public Account GetRemovedAccount(string accountId)
+    {
+        return _context.Accounts.Where(a => a.AccountId == accountId && a.Removed == true).FirstOrDefault();
+    }
+    
     public bool AccountExists(string accountId)
     {
-        return _context.Accounts.Any(a => a.AccountId == accountId);
+        return _context.Accounts.Any(a => a.AccountId == accountId && a.Removed == false);
+    }
+    
+    public bool IfAccountRemoved(string accountId)
+    {
+        return _context.Accounts.Any(a => a.AccountId == accountId && a.Removed == true);
     }
     
     public bool UpdateBalance(Account account, double newBalance)
@@ -55,7 +70,13 @@ public class AccountRepository : IAccountRepository
         _context.Accounts.Where(a => a.AccountId == account.AccountId).FirstOrDefault().Removed = true;
         return Save();
     }
-
+    
+    public bool RecoverAccount(Account account)
+    {
+        _context.Accounts.Where(a => a.AccountId == account.AccountId).FirstOrDefault().Removed = false;
+        return Save();
+    }
+    
     public bool Save()
     {
         var saved = _context.SaveChanges();

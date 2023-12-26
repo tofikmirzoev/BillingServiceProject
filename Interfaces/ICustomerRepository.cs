@@ -9,4 +9,5 @@ public interface ICustomerRepository
     public bool CustomerExists(string customerId);
     public bool Save();
     public bool AddCustomer(Customer customer, string accountId, double balance); 
+    public bool DeleteCustomer(Customer customer); 
 }

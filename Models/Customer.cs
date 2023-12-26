@@ -8,5 +8,6 @@ public class Customer
     public DateTime DateOfBirth { get; set; }
     public string PlaceOfBirth { get; set; }
     public string CustomerType { get; set; }
+    public bool Removed { get; set; }
     public ICollection<CustomerAccount> CustomerAccounts { get; set; }
 }

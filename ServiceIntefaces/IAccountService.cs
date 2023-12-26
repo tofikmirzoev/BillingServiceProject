@@ -10,8 +10,10 @@ namespace BillingAPI.ServiceIntefaces;
 public interface IAccountService
 {
     public Result<ICollection<AccountDTO>> GetAccounts();
+    public Result<ICollection<AccountDTO>> GetAllAccounts();
     public Result<AccountDTO> GetAccount(string accountId);
     public Result UpdateBalance(UpdateBalanceRequest request);
     public RegisterAccountResponse RegisterAccountResponse(RegisterAccountRequest request);
     public Result RemoveAccount(string accountId);
+    public Result RecoverAccount(string accountId);
 }

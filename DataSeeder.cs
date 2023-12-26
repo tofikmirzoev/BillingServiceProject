@@ -28,6 +28,7 @@ public class DataSeeder
                         DateOfBirth = new DateTime(1998, 11, 24),
                         PlaceOfBirth = "Baku",
                         CustomerType = "Private",
+                        Removed = false
                     },
                     Account = new Account()
                     {
@@ -66,6 +67,7 @@ public class DataSeeder
                         DateOfBirth = new DateTime(1999, 11, 10),
                         PlaceOfBirth = "Baku",
                         CustomerType = "Private",
+                        Removed = false
                     },
                     Account = new Account()
                     {
