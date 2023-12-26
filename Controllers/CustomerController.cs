@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAPI.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class CustomerController : Controller
 {
@@ -44,7 +44,7 @@ public class CustomerController : Controller
         
         return Ok(customerResult);
     }
-    [HttpPost("/AddNewCustomer")]
+    [HttpPost("addCustomer")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult AddCustomer([FromBody] AddCustomerRequest request)

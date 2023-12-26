@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BillingAPI.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class AccountController : Controller
 {
@@ -39,7 +39,7 @@ public class AccountController : Controller
         return Ok(accountResult);
     }
 
-    [HttpPatch("/NewBalance")]
+    [HttpPatch("newBalance")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400)]
     public IActionResult UpdateBalance([FromBody] UpdateBalanceRequest request)
@@ -54,7 +54,7 @@ public class AccountController : Controller
         return Ok(updateBalanceResult);
     }
     
-    [HttpDelete("/{accountId}")]
+    [HttpDelete("{accountId}")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400)]
     public IActionResult DeleteAccount(string accountId)
@@ -69,7 +69,7 @@ public class AccountController : Controller
         return Ok(removeAccountResult);
     }
     
-    [HttpPut("/Restore/{accountId}")]
+    [HttpPut("{accountId}/restore")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400)]
     public IActionResult RecoverAccount(string accountId)
