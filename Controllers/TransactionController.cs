@@ -20,6 +20,7 @@ public class TransactionController : Controller
     [ProducesResponseType(400)]
     public IActionResult DoPurchase([FromBody] DoPurchaseRequest request)
     {
+        Console.WriteLine(request.fromAccount, request.toAccount, request.purchaseType);
         if (request == null)
             return BadRequest(ModelState);
         

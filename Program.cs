@@ -2,7 +2,6 @@ using System.Reflection;
 using BillingAPI;
 using BillingAPI.Data;
 using BillingAPI.Interfaces;
-using BillingAPI.Models;
 using BillingAPI.Repository;
 using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;

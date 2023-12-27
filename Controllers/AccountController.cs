@@ -39,7 +39,7 @@ public class AccountController : Controller
         return Ok(accountResult);
     }
 
-    [HttpPatch("newBalance")]
+    [HttpPatch("/newBalance")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400)]
     public IActionResult UpdateBalance([FromBody] UpdateBalanceRequest request)
