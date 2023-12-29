@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BillingAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231208200426_NewAccountBalanceAccount")]
-    partial class NewAccountBalanceAccount
+    [Migration("20231228141146_FirstMigrationAfterCleaning")]
+    partial class FirstMigrationAfterCleaning
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,9 @@ namespace BillingAPI.Migrations
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Removed")
+                        .HasColumnType("bit");
 
                     b.HasKey("AccountId");
 
@@ -92,15 +95,16 @@ namespace BillingAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"), 1L, 1);
 
-                    b.Property<string>("AccountId")
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("FromAccountId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("BalanceAfter")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("BalanceBefore")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("ToAccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
@@ -109,12 +113,11 @@ namespace BillingAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("amount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("FromAccountId");
+
+                    b.HasIndex("ToAccountId");
 
                     b.ToTable("Transactions");
                 });
@@ -140,20 +143,30 @@ namespace BillingAPI.Migrations
 
             modelBuilder.Entity("BillingAPI.Models.Transactions", b =>
                 {
-                    b.HasOne("BillingAPI.Models.Account", "Account")
-                        .WithMany("TransactionsCollection")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("BillingAPI.Models.Account", "FromAccount")
+                        .WithMany("TransactionsCollectionFrom")
+                        .HasForeignKey("FromAccountId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.HasOne("BillingAPI.Models.Account", "ToAccount")
+                        .WithMany("TransactionsCollectionTo")
+                        .HasForeignKey("ToAccountId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("FromAccount");
+
+                    b.Navigation("ToAccount");
                 });
 
             modelBuilder.Entity("BillingAPI.Models.Account", b =>
                 {
                     b.Navigation("CustomerAccounts");
 
-                    b.Navigation("TransactionsCollection");
+                    b.Navigation("TransactionsCollectionFrom");
+
+                    b.Navigation("TransactionsCollectionTo");
                 });
 
             modelBuilder.Entity("BillingAPI.Models.Customer", b =>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BillingAPI.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class FirstMigrationAfterCleaning : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,9 @@ namespace BillingAPI.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccountBalance = table.Column<double>(type: "float", nullable: false),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,20 +47,23 @@ namespace BillingAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TransactionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BalanceBefore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BalanceAfter = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    FromAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ToAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.TransactionId);
                     table.ForeignKey(
-                        name: "FK_Transactions_Accounts_AccountId",
-                        column: x => x.AccountId,
+                        name: "FK_Transactions_Accounts_FromAccountId",
+                        column: x => x.FromAccountId,
                         principalTable: "Accounts",
-                        principalColumn: "AccountId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AccountId");
+                    table.ForeignKey(
+                        name: "FK_Transactions_Accounts_ToAccountId",
+                        column: x => x.ToAccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "AccountId");
                 });
 
             migrationBuilder.CreateTable(
@@ -91,9 +96,14 @@ namespace BillingAPI.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_AccountId",
+                name: "IX_Transactions_FromAccountId",
                 table: "Transactions",
-                column: "AccountId");
+                column: "FromAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_ToAccountId",
+                table: "Transactions",
+                column: "ToAccountId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

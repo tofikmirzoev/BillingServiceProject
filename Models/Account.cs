@@ -10,5 +10,6 @@ public class Account
     public double AccountBalance { get; set; }
     public bool Removed { get; set; }
     public ICollection<CustomerAccount> CustomerAccounts { get; set; }
-    public ICollection<Transactions> TransactionsCollection { get; set; }
+    public ICollection<Transactions> TransactionsCollectionTo { get; set; }
+    public ICollection<Transactions> TransactionsCollectionFrom { get; set; }
 }

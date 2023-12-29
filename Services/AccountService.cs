@@ -52,10 +52,8 @@ public class AccountService : IAccountService
         {
             TransactionDate = DateTime.Now,
             TransactionType = "Balance Update",
-            amount = request.newBanalce,
-            BalanceAfter = request.newBanalce,
-            BalanceBefore = account.AccountBalance,
-            Account = account
+            Amount = request.newBanalce,
+            FromAccount = account
         };
         
         var updateBalanceResult =  _unitOfWork.Account.UpdateBalance(account, request.newBanalce);

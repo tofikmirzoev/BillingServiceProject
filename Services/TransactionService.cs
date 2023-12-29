@@ -1,6 +1,7 @@
 using AutoMapper;
 using BillingAPI.BillingMessages;
 using BillingAPI.BillingResponses;
+using BillingAPI.DTO;
 using BillingAPI.Models;
 using BillingAPI.Repository.UnitOfWork;
 using BillingAPI.ServiceIntefaces;
@@ -18,11 +19,11 @@ public class TransactionService : ITransactionService
         _mapper = mapper;
     }
     
-    public Result DoPurchase(DoPurchaseRequest request)
+    public Result<TransactionDTO> DoPurchase(DoPurchaseRequest request)
     {
         if (!_unitOfWork.Account.AccountExists(request.fromAccount) ||
             !_unitOfWork.Account.AccountExists(request.toAccount))
-            return Result.Fail("Please check if the account is specified" +
+            return Result.Fail<TransactionDTO>("Please check if the account is specified" +
                                "correctly");
         
         var fromAccountObj = _unitOfWork.Account.GetAccount(request.fromAccount);
@@ -31,33 +32,21 @@ public class TransactionService : ITransactionService
         if (fromAccountObj.AccountBalance - request.amountToSend > 0)
             fromAccountObj.AccountBalance -= request.amountToSend;
         else
-            return Result.Fail("Not enough balance");
+            return Result.Fail<TransactionDTO>("Not enough balance");
         
         toAccountObj.AccountBalance += request.amountToSend;
         var senderTransaction = new Transactions()
         {
             TransactionDate = DateTime.Now,
             TransactionType = request.purchaseType,
-            amount = request.amountToSend,
-            BalanceAfter = fromAccountObj.AccountBalance,
-            BalanceBefore = fromAccountObj.AccountBalance + request.amountToSend,
-            Account = fromAccountObj
+            Amount = request.amountToSend,
+            FromAccount = fromAccountObj,
+            ToAccount = toAccountObj
         };
         
-        var receiverTransaction = new Transactions()
-        {
-            TransactionDate = DateTime.Now,
-            TransactionType = request.purchaseType,
-            amount = request.amountToSend,
-            BalanceAfter = toAccountObj.AccountBalance,
-            BalanceBefore = toAccountObj.AccountBalance - request.amountToSend,
-            Account = toAccountObj
-        };
-
-        if (!GenerateTransaction(new Transactions[] { senderTransaction, receiverTransaction }))
-            return Result.Fail("Transaction failed");
-        
-        return Result.Ok();
+        if (!GenerateTransaction(new Transactions[] { senderTransaction }))
+            return Result.Fail<TransactionDTO>("Transaction failed");
+        return Result.Ok(_mapper.Map<TransactionDTO>(senderTransaction));
     }
 
     public Result MakeTopUp(TopUpRequest request)
@@ -76,10 +65,8 @@ public class TransactionService : ITransactionService
         {
             TransactionDate = DateTime.Now,
             TransactionType = "Top Up",
-            amount = request.topUpAmount,
-            BalanceAfter = accountObj.AccountBalance,
-            BalanceBefore = accountObj.AccountBalance - request.topUpAmount,
-            Account = accountObj
+            Amount = request.topUpAmount,
+            FromAccount = accountObj
         };
 
         if (!GenerateTransaction(new Transactions[] { transaction }))
@@ -114,24 +101,13 @@ public class TransactionService : ITransactionService
         {
             TransactionDate = DateTime.Now,
             TransactionType = "Collection",
-            amount = amountToCollect,
-            BalanceAfter = accountToCredit.AccountBalance,
-            BalanceBefore = accountToCredit.AccountBalance + amountToCollect,
-            Account = accountToCredit
-        };
-        
-        var refundedTransaction = new Transactions()
-        {
-            TransactionDate = DateTime.Now,
-            TransactionType = "Refunded amount",
-            amount = amountToCollect,
-            BalanceAfter = creditAccount.AccountBalance,
-            BalanceBefore = creditAccount.AccountBalance - amountToCollect,
-            Account = creditAccount
+            Amount = amountToCollect,
+            FromAccount = accountToCredit,
+            ToAccount = creditAccount
         };
 
-        var transactionResult = GenerateTransaction(new Transactions[] { collectionTransaction, 
-            refundedTransaction });
+
+        var transactionResult = GenerateTransaction(new Transactions[] { collectionTransaction });
         if (!transactionResult)
             return Result.Fail<CollectionResponse>("Transaction failed");
 

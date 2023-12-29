@@ -16,7 +16,7 @@ public class TransactionRepository : ITransactionRepository
     
     public List<Transactions> GetTransactions(string accountId)
     {
-        return _context.Transactions.Where(t => t.Account.AccountId == accountId).ToList();
+        return _context.Transactions.Where(t => t.FromAccount.AccountId == accountId).ToList();
     }
 
     public Transactions GetTransaction(int transactionId)

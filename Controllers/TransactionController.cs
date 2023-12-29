@@ -28,7 +28,7 @@ public class TransactionController : Controller
         if (doPurchaseResult.IsFailed)
             return BadRequest(doPurchaseResult.Reasons);
         
-        return Ok(doPurchaseResult);
+        return Ok(doPurchaseResult.Value);
     }
 
     [HttpPost("MakeTopUp")]

@@ -23,5 +23,11 @@ public class DataContext : DbContext
             .HasForeignKey(fk => fk.AccountId);
 
         modelBuilder.Entity<Transactions>().HasKey(tr => new { tr.TransactionId });
+
+        modelBuilder.Entity<Transactions>().HasOne(tr => tr.FromAccount).WithMany(a => a.TransactionsCollectionFrom)
+            .HasForeignKey(tfk => tfk.FromAccountId).OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Transactions>().HasOne(tr => tr.ToAccount).WithMany(a => a.TransactionsCollectionTo)
+            .HasForeignKey(tfk => tfk.ToAccountId).OnDelete(DeleteBehavior.NoAction);
     }
 }
