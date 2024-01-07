@@ -11,5 +11,6 @@ public interface ITransactionService
     public Result<TransactionDTO> DoPurchase(DoPurchaseRequest request);
     public Result MakeTopUp(TopUpRequest request);
     public Result<CollectionResponse> Collect(CollectionRequest request);
+    public Result<TransactionDTO> CommitTransaction(CommitTransactionRequest request);
     public Result Disburse();
 }

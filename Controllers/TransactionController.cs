@@ -14,17 +14,16 @@ public class TransactionController : Controller
         _transactionService = transactionService;
     }
     
-    [HttpPost("DoPurchase")]
+    [HttpPost("CommitTransaction")]
     [ProducesResponseType(200)]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public IActionResult DoPurchase([FromBody] DoPurchaseRequest request)
+    public IActionResult CommitTransaction([FromBody] CommitTransactionRequest request)
     {
-        Console.WriteLine(request.fromAccount, request.toAccount, request.purchaseType);
         if (request == null)
             return BadRequest(ModelState);
         
-        var doPurchaseResult = _transactionService.DoPurchase(request);
+        var doPurchaseResult = _transactionService.CommitTransaction(request);
         if (doPurchaseResult.IsFailed)
             return BadRequest(doPurchaseResult.Reasons);
         
