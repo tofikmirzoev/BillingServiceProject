@@ -117,10 +117,10 @@ public class TransactionService : ITransactionService
 
     public Result<TransactionDTO> CommitTransaction(CommitTransactionRequest request)
     {
-        if (!_unitOfWork.Account.AccountExists(request.fromAccount) ||
-            !_unitOfWork.Account.AccountExists(request.toAccount))
-            return Result.Fail<TransactionDTO>("Please check if the account is specified" +
-                                               "correctly");
+        // if (!_unitOfWork.Account.AccountExists(request.fromAccount) ||
+        //     !_unitOfWork.Account.AccountExists(request.toAccount))
+        //     return Result.Fail<TransactionDTO>("Please check if the account is specified" +
+        //                                        " correctly");
         
         var fromAccountObj = _unitOfWork.Account.GetAccount(request.fromAccount);
         var toAccountObj = _unitOfWork.Account.GetAccount(request.toAccount);
