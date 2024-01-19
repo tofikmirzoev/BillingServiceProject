@@ -4,6 +4,7 @@ using BillingAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BillingAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240119103639_AccountFieldAdded")]
+    partial class AccountFieldAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,41 +91,6 @@ namespace BillingAPI.Migrations
                     b.ToTable("CustomerAccounts");
                 });
 
-            modelBuilder.Entity("BillingAPI.Models.Deposits", b =>
-                {
-                    b.Property<string>("DepositID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AccountID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CloseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("DepositBalance")
-                        .HasColumnType("float");
-
-                    b.Property<string>("DepositStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("DepositTerm")
-                        .HasColumnType("bigint");
-
-                    b.Property<float>("InterestRate")
-                        .HasColumnType("real");
-
-                    b.Property<DateTime>("OpenDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("DepositID");
-
-                    b.HasIndex("AccountID");
-
-                    b.ToTable("Deposits");
-                });
-
             modelBuilder.Entity("BillingAPI.Models.Transactions", b =>
                 {
                     b.Property<int>("TransactionId")
@@ -178,17 +145,6 @@ namespace BillingAPI.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("BillingAPI.Models.Deposits", b =>
-                {
-                    b.HasOne("BillingAPI.Models.Account", "Account")
-                        .WithMany("DepositsCollection")
-                        .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("BillingAPI.Models.Transactions", b =>
                 {
                     b.HasOne("BillingAPI.Models.Account", "FromAccount")
@@ -211,8 +167,6 @@ namespace BillingAPI.Migrations
             modelBuilder.Entity("BillingAPI.Models.Account", b =>
                 {
                     b.Navigation("CustomerAccounts");
-
-                    b.Navigation("DepositsCollection");
 
                     b.Navigation("TransactionsCollectionFrom");
 

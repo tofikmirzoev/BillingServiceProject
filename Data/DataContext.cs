@@ -26,8 +26,12 @@ public class DataContext : DbContext
 
         modelBuilder.Entity<Transactions>().HasOne(tr => tr.FromAccount).WithMany(a => a.TransactionsCollectionFrom)
             .HasForeignKey(tfk => tfk.FromAccountId).OnDelete(DeleteBehavior.NoAction);
-
         modelBuilder.Entity<Transactions>().HasOne(tr => tr.ToAccount).WithMany(a => a.TransactionsCollectionTo)
             .HasForeignKey(tfk => tfk.ToAccountId).OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Deposits>().HasKey(d => new { d.DepositID });
+
+        modelBuilder.Entity<Deposits>().HasOne(d => d.Account).WithMany(a => a.DepositsCollection)
+            .HasForeignKey(dfk => dfk.AccountID).OnDelete(DeleteBehavior.NoAction);
     }
 }

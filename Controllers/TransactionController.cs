@@ -16,7 +16,6 @@ public class TransactionController : Controller
     
     [HttpPost("CommitTransaction")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     public IActionResult CommitTransaction([FromBody] CommitTransactionRequest request)
     {
@@ -30,33 +29,12 @@ public class TransactionController : Controller
         return Ok(doPurchaseResult.Value);
     }
 
-    [HttpPost("MakeTopUp")]
+    [HttpPost("CalculateSavingAccountBalance")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult MakeTopUp([FromBody] TopUpRequest request)
+    public IActionResult CalculateSavingAccountBalance()
     {
-        if (request == null)
-            return BadRequest(ModelState);
-
-        var makeTopUpResult = _transactionService.MakeTopUp(request);
-        if (makeTopUpResult.IsFailed)
-            return BadRequest(makeTopUpResult.Reasons);
-
-        return Ok(makeTopUpResult);
-    }
-    
-    [HttpPost("Collection")]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    public IActionResult Collection([FromBody] CollectionRequest request)
-    {
-        if (request == null)
-            return BadRequest(ModelState);
-
-        var collectionResult = _transactionService.Collect(request);
-        if (collectionResult.IsFailed)
-            return BadRequest(collectionResult.Reasons);
-
-        return Ok(collectionResult);
+        
+        return Ok();
     }
 }

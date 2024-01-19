@@ -41,6 +41,7 @@ public class AccountController : Controller
 
     [HttpPatch("/newBalance")]
     [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     public IActionResult UpdateBalance([FromBody] UpdateBalanceRequest request)
     {
@@ -56,6 +57,7 @@ public class AccountController : Controller
     
     [HttpDelete("{accountId}")]
     [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     public IActionResult DeleteAccount(string accountId)
     {
@@ -71,6 +73,7 @@ public class AccountController : Controller
     
     [HttpPut("{accountId}/restore")]
     [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(204)]
     [ProducesResponseType(400)]
     public IActionResult RecoverAccount(string accountId)
     {
