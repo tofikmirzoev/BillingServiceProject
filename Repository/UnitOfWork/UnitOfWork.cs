@@ -13,6 +13,7 @@ public class UnitOfWork : IDisposable
     private IAccountRepository _accountRepository;
     private ICustomerRepository _customerRepository;
     private ITransactionRepository _transactionRepository;
+    private IDepositRepository _depositRepository;
 
     public UnitOfWork(DataContext context)
     {
@@ -46,6 +47,17 @@ public class UnitOfWork : IDisposable
                 _transactionRepository = new TransactionRepository(_context);
             
             return _transactionRepository;
+        }
+    }
+
+    public IDepositRepository Deposits
+    {
+        get
+        {
+            if (_depositRepository == null)
+                _depositRepository = new DepositRepository(_context);
+            
+            return _depositRepository;
         }
     }
     public virtual void Dispose(bool disposing)

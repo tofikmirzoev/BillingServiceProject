@@ -14,5 +14,6 @@ public interface IAccountRepository
     public bool AddAccount(Account account, string customerId);
     public bool DeleteAccount(Account accountId);
     public bool RecoverAccount(Account accountId);
+    public ICollection<Account> GetAccountsWithDeposit();
     public bool Save();
 }

@@ -30,6 +30,11 @@ public class AccountService : IAccountService
         return Result.Ok(_mapper.Map<ICollection<AccountDTO>>(_unitOfWork.Account.GetAllAccounts()));
     }
 
+    public Result<ICollection<AccountDTO>> GetAllAccountsWithDeposit()
+    {
+        return Result.Ok(_mapper.Map<ICollection<AccountDTO>>(_unitOfWork.Account.GetAccountsWithDeposit()));
+    }
+
     public Result<AccountDTO> GetAccount(string accountId)
     {
         if (!_unitOfWork.Account.AccountExists(accountId))

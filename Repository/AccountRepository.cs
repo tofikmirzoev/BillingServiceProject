@@ -76,7 +76,12 @@ public class AccountRepository : IAccountRepository
         _context.Accounts.Where(a => a.AccountId == account.AccountId).FirstOrDefault().Removed = false;
         return Save();
     }
-    
+
+    public ICollection<Account> GetAccountsWithDeposit()
+    {
+        return _context.Accounts.Where(a => a.DepositsCollection.Count > 0).ToList();
+    }
+
     public bool Save()
     {
         var saved = _context.SaveChanges();

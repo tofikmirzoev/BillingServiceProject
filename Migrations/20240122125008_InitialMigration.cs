@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BillingAPI.Migrations
 {
-    public partial class FirstMigrationAfterCleaning : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,8 @@ namespace BillingAPI.Migrations
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AccountBalance = table.Column<double>(type: "float", nullable: false),
-                    Removed = table.Column<bool>(type: "bit", nullable: false)
+                    Removed = table.Column<bool>(type: "bit", nullable: false),
+                    AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,6 +38,29 @@ namespace BillingAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deposits",
+                columns: table => new
+                {
+                    DepositId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DepositBalance = table.Column<double>(type: "float", nullable: false),
+                    DepositTerm = table.Column<long>(type: "bigint", nullable: false),
+                    InterestRate = table.Column<float>(type: "real", nullable: false),
+                    OpenDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CloseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DepositStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deposits", x => x.DepositId);
+                    table.ForeignKey(
+                        name: "FK_Deposits_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "AccountId");
                 });
 
             migrationBuilder.CreateTable(
@@ -96,6 +120,11 @@ namespace BillingAPI.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deposits_AccountId",
+                table: "Deposits",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_FromAccountId",
                 table: "Transactions",
                 column: "FromAccountId");
@@ -110,6 +139,9 @@ namespace BillingAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CustomerAccounts");
+
+            migrationBuilder.DropTable(
+                name: "Deposits");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

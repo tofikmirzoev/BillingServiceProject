@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BillingAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240119122344_DepositTableAdded")]
-    partial class DepositTableAdded
+    [Migration("20240122125008_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,10 +93,10 @@ namespace BillingAPI.Migrations
 
             modelBuilder.Entity("BillingAPI.Models.Deposits", b =>
                 {
-                    b.Property<string>("DepositID")
+                    b.Property<string>("DepositId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AccountID")
+                    b.Property<string>("AccountId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -119,9 +119,9 @@ namespace BillingAPI.Migrations
                     b.Property<DateTime>("OpenDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("DepositID");
+                    b.HasKey("DepositId");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex("AccountId");
 
                     b.ToTable("Deposits");
                 });
@@ -184,7 +184,7 @@ namespace BillingAPI.Migrations
                 {
                     b.HasOne("BillingAPI.Models.Account", "Account")
                         .WithMany("DepositsCollection")
-                        .HasForeignKey("AccountID")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

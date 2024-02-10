@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BillingAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240119103639_AccountFieldAdded")]
-    partial class AccountFieldAdded
+    [Migration("20240122130929_AddGenerationToDepositId")]
+    partial class AddGenerationToDepositId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,6 +91,42 @@ namespace BillingAPI.Migrations
                     b.ToTable("CustomerAccounts");
                 });
 
+            modelBuilder.Entity("BillingAPI.Models.Deposits", b =>
+                {
+                    b.Property<string>("DepositId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("DepositBalance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("DepositStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("DepositTerm")
+                        .HasColumnType("bigint");
+
+                    b.Property<float>("InterestRate")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("OpenDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DepositId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Deposits");
+                });
+
             modelBuilder.Entity("BillingAPI.Models.Transactions", b =>
                 {
                     b.Property<int>("TransactionId")
@@ -145,6 +181,17 @@ namespace BillingAPI.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("BillingAPI.Models.Deposits", b =>
+                {
+                    b.HasOne("BillingAPI.Models.Account", "Account")
+                        .WithMany("DepositsCollection")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("BillingAPI.Models.Transactions", b =>
                 {
                     b.HasOne("BillingAPI.Models.Account", "FromAccount")
@@ -167,6 +214,8 @@ namespace BillingAPI.Migrations
             modelBuilder.Entity("BillingAPI.Models.Account", b =>
                 {
                     b.Navigation("CustomerAccounts");
+
+                    b.Navigation("DepositsCollection");
 
                     b.Navigation("TransactionsCollectionFrom");
 

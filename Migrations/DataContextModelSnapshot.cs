@@ -91,10 +91,11 @@ namespace BillingAPI.Migrations
 
             modelBuilder.Entity("BillingAPI.Models.Deposits", b =>
                 {
-                    b.Property<string>("DepositID")
+                    b.Property<string>("DepositId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AccountID")
+                    b.Property<string>("AccountId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -111,15 +112,18 @@ namespace BillingAPI.Migrations
                     b.Property<long>("DepositTerm")
                         .HasColumnType("bigint");
 
+                    b.Property<double>("InitialDepositAmount")
+                        .HasColumnType("float");
+
                     b.Property<float>("InterestRate")
                         .HasColumnType("real");
 
                     b.Property<DateTime>("OpenDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("DepositID");
+                    b.HasKey("DepositId");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex("AccountId");
 
                     b.ToTable("Deposits");
                 });
@@ -182,7 +186,7 @@ namespace BillingAPI.Migrations
                 {
                     b.HasOne("BillingAPI.Models.Account", "Account")
                         .WithMany("DepositsCollection")
-                        .HasForeignKey("AccountID")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

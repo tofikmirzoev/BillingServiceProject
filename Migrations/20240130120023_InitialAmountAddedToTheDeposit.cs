@@ -4,23 +4,23 @@
 
 namespace BillingAPI.Migrations
 {
-    public partial class AccountFieldAdded : Migration
+    public partial class InitialAmountAddedToTheDeposit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "AccountType",
-                table: "Accounts",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<double>(
+                name: "InitialDepositAmount",
+                table: "Deposits",
+                type: "float",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: 0.0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "AccountType",
-                table: "Accounts");
+                name: "InitialDepositAmount",
+                table: "Deposits");
         }
     }
 }

@@ -13,6 +13,7 @@ public class DataContext : DbContext
     public DbSet<Account> Accounts { get; set; }
     public DbSet<CustomerAccount> CustomerAccounts { get; set; }
     public DbSet<Transactions> Transactions { get; set; }
+    public DbSet<Deposits> Deposits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,9 +30,10 @@ public class DataContext : DbContext
         modelBuilder.Entity<Transactions>().HasOne(tr => tr.ToAccount).WithMany(a => a.TransactionsCollectionTo)
             .HasForeignKey(tfk => tfk.ToAccountId).OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<Deposits>().HasKey(d => new { d.DepositID });
+        modelBuilder.Entity<Deposits>().HasKey(d => new { d.DepositId });
+        modelBuilder.Entity<Deposits>().Property(d => d.DepositId).ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Deposits>().HasOne(d => d.Account).WithMany(a => a.DepositsCollection)
-            .HasForeignKey(dfk => dfk.AccountID).OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(dfk => dfk.AccountId).OnDelete(DeleteBehavior.NoAction);
     }
 }

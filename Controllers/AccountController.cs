@@ -71,7 +71,7 @@ public class AccountController : Controller
         return Ok(removeAccountResult);
     }
     
-    [HttpPut("{accountId}/restore")]
+    [HttpPatch("{accountId}/restore")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]

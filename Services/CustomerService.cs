@@ -54,7 +54,8 @@ public class CustomerService : ICustomerService
             TransactionDate = DateTime.Now,
             TransactionType = "Account balance top up on creat",
             Amount = request.balance,
-            FromAccount = _unitOfWork.Account.GetAccount(request.accountId)
+            FromAccount = _unitOfWork.Account.GetAccount(request.accountId),
+            ToAccount = _unitOfWork.Account.GetAccount(request.accountId)
         };
 
         var transactionAddingResult = _unitOfWork.Tranasctions.AddTransaction(accountRegistrationTransaction);

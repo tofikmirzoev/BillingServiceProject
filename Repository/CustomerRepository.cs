@@ -38,7 +38,8 @@ public class CustomerRepository : ICustomerRepository
             {
                 AccountId = accountId,
                 AccountBalance = balance,
-                DateCreated = DateTime.Now
+                DateCreated = DateTime.Now,
+                AccountType = customer.CustomerType
             }
         };
 

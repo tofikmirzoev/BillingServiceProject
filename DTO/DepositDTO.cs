@@ -1,6 +1,6 @@
-namespace BillingAPI.Models;
+namespace BillingAPI.DTO;
 
-public class Deposits
+public class DepositDTO
 {
     public string DepositId { get; set; }
     public double DepositBalance { get; set; }
@@ -10,6 +10,4 @@ public class Deposits
     public DateTime OpenDate { get; set; }
     public DateTime CloseDate { get; set; }
     public string DepositStatus { get; set; }
-    public Account Account { get; set; }
-    public string AccountId { get; set; }
 }
