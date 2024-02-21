@@ -1,5 +1,6 @@
 using System.Reflection;
 using BillingAPI;
+using BillingAPI.CustomMiddlewares;
 using BillingAPI.Data;
 using BillingAPI.Interfaces;
 using BillingAPI.Repository;
@@ -23,11 +24,11 @@ builder.Services.AddScoped<IDepositService, DepositService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpLogging(o => { });
+//builder.Services.AddHttpLogging(o => { });
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLExpressConnection"));
-    // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("SQLExpressConnection"));
+     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();
@@ -50,12 +51,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpLogging();  
-
+app.UseMiddleware<HttpLoggerMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 app.Run();
