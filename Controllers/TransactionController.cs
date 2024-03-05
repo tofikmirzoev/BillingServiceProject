@@ -17,7 +17,7 @@ public class TransactionController : Controller
     [HttpPost("CommitTransaction")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult CommitTransaction([FromBody] CommitTransactionRequest request)
+    public IActionResult CommitTransaction([FromBody] PaymentRequest? request)
     {
         if (request == null)
             return BadRequest(ModelState);

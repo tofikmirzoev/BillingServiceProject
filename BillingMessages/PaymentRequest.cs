@@ -1,6 +1,6 @@
 namespace BillingAPI.BillingMessages;
 
-public class CommitTransactionRequest
+public class PaymentRequest
 {
     public string fromAccount { get; set; }
     public string toAccount { get; set; }

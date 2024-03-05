@@ -8,6 +8,6 @@ namespace BillingAPI.ServiceIntefaces;
 
 public interface ITransactionService
 {
-    public Result<TransactionDTO> CommitTransaction(CommitTransactionRequest request);
+    public Result<TransactionResult> CommitTransaction(PaymentRequest? request);
     public Result Disburse();
 }

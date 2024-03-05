@@ -13,4 +13,5 @@ public interface IDepositService
     Result RegisterDeposit(RegisterDepositRequest request);
     Result<UpdateDepositResponse> UpdateDeposits(UpdateDepositsRequest request);
     Result CloseDeposit(string depositId);
+    protected PaymentRequest CreateTransactionRequest();
 }

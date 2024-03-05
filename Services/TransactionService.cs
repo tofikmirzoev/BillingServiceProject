@@ -1,6 +1,7 @@
 using AutoMapper;
 using BillingAPI.BillingMessages;
 using BillingAPI.BillingResponses;
+using BillingAPI.Constants;
 using BillingAPI.DTO;
 using BillingAPI.Models;
 using BillingAPI.Repository.UnitOfWork;
@@ -19,15 +20,21 @@ public class TransactionService : ITransactionService
         _mapper = mapper;
     }
 
-    public Result<TransactionDTO> CommitTransaction(CommitTransactionRequest request)
+    public Result<TransactionResult> CommitTransaction(PaymentRequest? request)
     {
+        var transactionResult = new TransactionResult();
         var fromAccountObj = _unitOfWork.Account.GetAccount(request.fromAccount);
         var toAccountObj = _unitOfWork.Account.GetAccount(request.toAccount);
         
         if (fromAccountObj.AccountBalance - request.amountToSend > 0)
             fromAccountObj.AccountBalance -= request.amountToSend;
         else
-            return Result.Fail<TransactionDTO>("Not enough balance");
+        {
+            transactionResult.resultCode = RequestResultCodes.UnexptectedError;
+            transactionResult.resultDescription = RequestResultDescription.UnexptectedError;
+            transactionResult.amount = 0;
+            return Result.Ok(transactionResult);    
+        }
         
         toAccountObj.AccountBalance += request.amountToSend;
         var senderTransaction = new Transactions()
@@ -40,9 +47,12 @@ public class TransactionService : ITransactionService
         };
         
         if (!GenerateTransaction(new Transactions[] { senderTransaction }))
-            return Result.Fail<TransactionDTO>("Transaction failed");
-        
-        return Result.Ok(_mapper.Map<TransactionDTO>(senderTransaction));
+            return Result.Fail<TransactionResult>("Transaction failed");
+
+        transactionResult.resultCode = RequestResultCodes.Successful;
+        transactionResult.resultDescription = RequestResultDescription.Successful;
+        transactionResult.amount = senderTransaction.Amount;
+        return Result.Ok(transactionResult);
     }
 
     public Result Disburse()

@@ -48,6 +48,7 @@ public class DepositService : IDepositService
            )
             return Result.Fail("Null value");
 
+        var transactionCommit = CreateTransactionRequest();
         var registrationResult = _unitOfWork.Deposits.RegisterDeposit(registerDepositRequest);
         if (!registrationResult)
             return Result.Fail("Some error happened while registration");
@@ -107,5 +108,10 @@ public class DepositService : IDepositService
 
         return Result.Ok();
 
+    }
+
+    public PaymentRequest CreateTransactionRequest()
+    {
+        throw new NotImplementedException();
     }
 }
