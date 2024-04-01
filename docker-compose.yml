@@ -1,0 +1,15 @@
+services:
+  billingservice:
+    image: billingserviceimage
+    ports:
+      - '5213:80'
+    networks:
+      - test-network
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+networks:
+  test-network:
+    name: test-network
+    external: true
