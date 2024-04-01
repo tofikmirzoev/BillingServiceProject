@@ -15,5 +15,12 @@
       <jdbc-url>Server=TMIRZAYEV-HP\SQLEXPRESS;Database=billingdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@dockerBillingDb" uuid="43185458-0644-4249-ba67-521d0d445287">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=localhost\MSSQLSERVER,1433;Database=billingdb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
